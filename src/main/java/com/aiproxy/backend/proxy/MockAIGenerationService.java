@@ -2,6 +2,7 @@ package com.aiproxy.backend.proxy;
 
 import com.aiproxy.backend.dto.GenerationRequest;
 import com.aiproxy.backend.dto.GenerationResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,13 +26,16 @@ public class MockAIGenerationService implements AIGenerationService {
         "The observer pattern defines a one-to-many dependency between objects."
     );
 
+    @Value("${mock.ai.latency-ms:1200}")
+    private long latencyMs;
+
     private final Random random = new Random();
 
     @Override
     public GenerationResponse generate(GenerationRequest request) {
         long start = System.currentTimeMillis();
         try {
-            Thread.sleep(1200); // simulate AI latency
+            Thread.sleep(latencyMs);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
